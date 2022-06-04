@@ -1,6 +1,7 @@
 # File containing all game cards
 from heapq import merge
 from itertools import repeat
+import random
 
 # Resource Cards
 
@@ -51,14 +52,24 @@ designActionCards.extend(repeat(("Design", specializedHourCost[2]), specializedC
 
 actionCardPile = researchActionCards + marketingActionCards + technologyActionCards + designActionCards
 
+# create a random Resources pile and Actionable Cards pile
+currentResourcePile = resourcePile.copy()
+random.shuffle(currentResourcePile)
+random.shuffle(currentResourcePile)
+
+currentActionPile = actionCardPile.copy()
+random.shuffle(currentActionPile)
+random.shuffle(currentActionPile)
+discardedActionPile = []
+discardedActionPile.append(currentActionPile.pop())     # Adding 1st card to the discard pile
 
 # Skill Cards costs and benefits
 
-generalSkillCost = [0, 500, 2000, 4000, 6000]
-generalSkillReduction = [0, 1, 3, 6, 9]
+# generalSkillCost = [0, 500, 2000, 4000, 6000]
+# generalSkillReduction = [0, 1, 3, 6, 9]
 
-specialSkillCost = [0, 1500, 3500, 4500, 7000]
-specialSkillReduction = [0, 2, 5, 8, 11]
+# specialSkillCost = [0, 1500, 3500, 4500, 7000]
+# specialSkillReduction = [0, 2, 5, 8, 11]
 
 
 # Service Cards
