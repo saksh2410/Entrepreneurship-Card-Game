@@ -13,11 +13,13 @@ class player():
         self.MVP = MVP
         self.serviceCards = serviceCards
         self.resourceCardsNumber = 0
+        self.skillReduction = [0,0,0,0]     # variable holding the discount value of each action due to player skill
+        # Initial Creation of a player
         print("Creating player {}: {}".format(self.playerNumber, name))
-        print("********************************\n")
+        print("\n********************************")
         self.printMVP()
         self.printServiceCards()
-        print("\n********************************\n")
+        print("********************************\n")
         # Drawing 4 initial resources as the starting hand
         print("Drawing initial resources")    
         self.drawResource(4, currentResourcePile)
@@ -38,21 +40,24 @@ class player():
         print("Total Money:   ${}".format(self.money))
         
     def printSkillLevel(self):
-        print("Your current Skill Level (r,m,d,t) is: {}".format(self.skillLevel))
+        print("Your current Skill Level (R,M,D,T) is: {}".format(self.skillLevel))
     
     def printActionCards(self):
-        print("You have acquired the following Actionable Cards (r,m,d,t): {}".format(self.actionCards))
+        print("You have acquired the following Actionable Cards (R,M,D,T): {}".format(self.actionCards))
+    
+    def printSkillReduction(self):
+        print("Your current discount on skills (R,M,D,T) is:    {}".format(self.skillReduction))
     
     # to print every card player owns
     def printHold(self):
         print("Total number of Resource Cards: {}".format(self.resourceCardsNumber))
         print("Money: {}    Time: {}".format(self.money, self.time))
-        print("Skill Level (r,m,d,t):   {}".format(self.skillLevel))
-        print("Actionable Cards (r,m,d,t):  {}".format(self.actionCards))
+        print("Skill Level (R,M,D,T):   {}".format(self.skillLevel))
+        print("Actionable Cards (R,M,D,T):  {}".format(self.actionCards))
 
     # function to show your MVP
     def printMVP(self):
-        print("Your MVP requirement (r,m,d,t) is:   {}".format(self.MVP))
+        print("Your MVP requirement (R,M,D,T) is:   {}".format(self.MVP))
     # function to show your Service Cards
     def printServiceCards(self):
         print("You can offer the following services:    {}".format (self.serviceCards))
@@ -63,11 +68,12 @@ class player():
             resource = currentResourcePile.pop()
             if resource < 10:
                 self.time += resource
-                print("You drew:    {} hrs".format(resource))
+                print("{} drew:    {} hrs".format(self.name, resource))
             else:
                 self.money += resource
-                print("You drew:    ${}".format(resource))
+                print("{} drew:    ${}".format(self.name, resource))
         self.resourceCardsNumber += n
+        print("\n")
         self.printResourceCardsNumber()
         self.printResources()
 
@@ -110,15 +116,6 @@ def getMVP(MVPCards):   #to give random MVP cards to players use pop function in
     random.shuffle(MVPCardscopy)
     return MVPCardscopy
 
-
-# create a random Resources pile and Actionable Cards pile
-currentResourcePile = resourcePile.copy()
-random.shuffle(currentResourcePile)
-discardedActionPile = []
-currentActionPile = actionCardPile.copy()
-random.shuffle(currentActionPile)
-discardedActionPile.append(currentActionPile.pop())
-
 playerName= ["Parth", "Saksham", "Yajur"]
 
 # HARDCODING PLAYERS WITH CERTAIN MVPS AND SERVICE CARDS FOR PLAYTESTING
@@ -129,6 +126,7 @@ saksham= player(2, playerName[1], [3,2,3,2], "Design")
 print("\n\n")
 yajur= player(3, playerName[2], [2,3,3,2], "Marketing")
 print("\n\n")
+
 
 playerList= [parth, saksham, yajur]
 # TO GIVE RANDOM MVP AND SERVICE CARDS AND INITIATING PLAYERS
