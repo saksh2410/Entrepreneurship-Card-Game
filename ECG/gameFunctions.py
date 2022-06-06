@@ -1,5 +1,6 @@
 from dis import dis
 from statistics import median
+import random
 
 
 def getChoice():        # function to get users choice of action on their turn
@@ -64,7 +65,7 @@ def skillCards(player):       # Function for user to trigger Skill Cards
                 player.skillReduction[2] = specialReduction[design + 1]
                 print("\nCongrats, you upskilled DESIGN to lvl {}".format(player.skillLevel[2]))
                 print("You now get {}hrs off on DESIGN actionable cards\n".format(player.skillReduction[2]))
-                player.money -= specialCost[design]
+                player.money -= generalCost[design]
                 player.printMoney()
                 player.printSkillReduction()
             else:
@@ -75,7 +76,7 @@ def skillCards(player):       # Function for user to trigger Skill Cards
                 player.skillReduction[3] = specialReduction[technology + 1]
                 print("\nCongrats, you upskilled TECHNOLOGY to lvl {}\n".format(player.skillLevel[3]))
                 print("You now get {}hrs off on TECHNOLOGY actionable cards\n".format(player.skillReduction[3]))
-                player.money -= specialCost[technology] 
+                player.money -= specialCost[technology]
                 player.printMoney()
                 player.printSkillReduction()
             else:
@@ -136,104 +137,131 @@ def skillCards(player):       # Function for user to trigger Skill Cards
         return
 
 
+def actionCards(player,currentActionPile,discardedActionPile,drawnCounter):
 
-    return 0
+    def modifiedActionCardCost(currentTopActionCard): #dont know if working
 
-def actionCard(player,currentActionPile,discardedActionPile,drawnCounter):      # Function to trigger action cards
-    
-    def modifiedActionCardCost(topCard):        # Function to return modified cost due to player skill
-
-        startingLetter=topCard[0][0]
+        startingLetter=currentTopActionCard[0][0]
         if startingLetter=='R':
-            modifiedCost=topCard[1] - player.skillReduction[0]
+            modifiedCost=currentTopActionCard[1] - player.skillReduction[0]
         elif startingLetter=='M':
-            modifiedCost=topCard[1] - player.skillReduction[1]
+            modifiedCost=currentTopActionCard[1] - player.skillReduction[0]
         elif startingLetter=='D':
-            modifiedCost=topCard[1] - player.skillReduction[2]
+            modifiedCost=currentTopActionCard[1] - player.skillReduction[0]
         elif startingLetter=='T':
-            modifiedCost=topCard[1] - player.skillReduction[3]
+            modifiedCost=currentTopActionCard[1] - player.skillReduction[0]
 
-        print("The modified cost for this action card is * {} hours *".format(modifiedCost))
+        
         return modifiedCost
 
-    def buyActionCard(topCard):
+    def buyActionCard(currentTopAcionCard):
 
-        modifiedCost=modifiedActionCardCost(topCard)  #this variable tells the price at which player is buying that card
-        if player.time>=modifiedCost:
-            player.time-=modifiedCost
-            if topCard[0]=="Research":
-                player.actionCards[0]+=1
+        modifiedCostBuy=modifiedActionCardCost(currentTopActionCard)  #this variable tells the price at which player is buying that card
+        if player.time>=modifiedCostBuy:
+            print("Are you sure you want to buy this action card")
+            print("1.Yes       2.No")
+            confirmationBuyActionCard=int(input())
+            if confirmationBuyActionCard==1:
 
-            elif topCard[0]=="Marketing":
-                player.actionCards[1]+=1
+                player.time-=modifiedCostBuy
+                if currentTopActionCard[0]=="Research":
+                    player.actionCards[0]+=1
 
-            elif topCard[0]=="Design":
-                player.actionCards[2]+=1
+                elif currentTopActionCard[0]=="Marketing":
+                    player.actionCards[1]+=1
 
-            elif topCard[0]=="Technology":
-                player.actionCards[3]+=1
+                elif currentTopActionCard[0]=="Design":
+                    player.actionCards[2]+=1
 
-            print("You have bought {}".format(topCard))
-            discardedActionPile.pop()
+                elif currentTopActionCard[0]=="Technology":
+                    player.actionCards[3]+=1
+
+                print("You have bought {}".format(currentTopAcionCard))
+                discardedActionPile.pop()
+            elif confirmationBuyActionCard==2:
+                print("Tansanction Cancelled")
         
         else:
-            print("You do not have eenough resources to buy this card")
+            print("You do not have enough resources to buy this card")
             
    
     def cardDrawn(drawnCounter):
-        print("NOTE-The First card is free to draw. Every succesive card costs 1000$")
+        print("NOTE-The First card is free to draw. Every succesive card costs 1000$\n")
         if drawnCounter==0:
             drawnCard=currentActionPile.pop()
             discardedActionPile.append(drawnCard)
             drawnCounter=1
+            print("The Drawn Card is {}\n".format(drawnCard))
         elif drawnCounter>=1:
             if player.money>=1000:
-                player.money-=1000
-                drawnCard=currentActionPile.pop()
-                discardedActionPile.append(drawnCard)
-                drawnCounter+=1
+                print("Are you sure you want to draw new action card worth 1000$")
+                print("1.Yes          2.No")
+                confirmationDrawCard=int(input())
+                if confirmationDrawCard==1:
+                    player.money-=1000
+                    drawnCard=currentActionPile.pop()
+                    discardedActionPile.append(drawnCard)
+                    drawnCounter+=1
+                    print("The Drawn Card is {}\n".format(drawnCard))
+                elif confirmationDrawCard==2:
+                    print("Transaction Cancelled")
             else:
                 print("You dont have enough money to draw another card")
+            
+        
         return drawnCounter
             
-    userRun=1       # Variable to hold whether the user is in action card menue or not
+    userRun=1
     
     while userRun==1:
-        topCard=discardedActionPile[-1]
-        print("\n\nTop opened Action card is :   {}".format(topCard))
+        # if len(currentActionPile)==0:  this code is for reshufffling when current actionpile is over
+        #     print("The action card pile is over and is being reshuffled")
+        #     copyDiscardedActionPile=discardedActionPile.copy()
+        #     currentActionPile=copyDiscardedActionPile[:-1]
+        #     discardedActionPile=[discardedActionPile.pop()]
+        #     random.shuffle(currentActionPile)
+        #     random.shuffle(currentActionPile)
+        print("****************************************************************")
         print("You have drawn {} cards in this chance".format(drawnCounter))
-        modifiedActionCardCost(topCard)
-        print("\n")
-        
-        print("1.Buy top Action Card")
-        print("2.Draw Action Card from deck")
-        print("3.Pass\n")
-        
-
-        playerFirstChoice=int(input())
-        print("\n")
-
-        if playerFirstChoice==1:
-            buyActionCard(topCard)
-        
-        elif playerFirstChoice==2:
-            drawnCounter=cardDrawn(drawnCounter)
-
-        elif playerFirstChoice==3:
-                userRun=0
+        if len(discardedActionPile)==0 :
+            print("You cannot purchase action cards before drawing as no action cards left in the pile\n\n")
+            print("1.Draw Action Card from deck")
+            print("2.Pass\n")
             
 
-    return 0
+        elif len(discardedActionPile)>0:
+            currentTopActionCard=discardedActionPile[-1]
+            print("\n\nTop opened Action card is :   {}".format(currentTopActionCard))
+            modifiedCost=modifiedActionCardCost(currentTopActionCard)
+            print("The modified cost for this action card is ** {} hours **\n\n".format(modifiedCost))
+
+            print("1.Draw Action Card from deck")
+            print("2.Pass")
+            print("3.Buy top Opened Action Card")
+
+        playerFirstChoice=int(input()) #have to make a check that user doesnt enter 3 even if first menu is showed
+        print("\n")
+                
+        
+        if playerFirstChoice==1 :
+            drawnCounter=cardDrawn(drawnCounter)
+
+        elif playerFirstChoice==2 :
+            userRun=0
+        
+        elif playerFirstChoice==3 :
+            buyActionCard(currentTopActionCard)
+        
+        else:
+            print("Invalid Number please try again")
+            
+
+      
+    return drawnCounter
 
 
 def checkWin(player):          # Function to check if the player has met the objectives required for winning
-
     if player.actionCards == player.MVP:
         return True
     else:
         return False
-
-def moreOptions():
-
-    print("1. View your skill discounts")
-    print("2. View your MVP requirements")

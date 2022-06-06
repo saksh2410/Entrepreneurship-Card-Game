@@ -53,22 +53,13 @@ designActionCards.extend(repeat(("Design", specializedHourCost[2]), specializedC
 actionCardPile = researchActionCards + marketingActionCards + technologyActionCards + designActionCards
 
 # create a random Resources pile and Actionable Cards pile
-def shuffle():
-    resources = resourcePile.copy()
-    random.shuffle(resources)
-    random.shuffle(resources)
-    return resources
-
-currentResourcePile = []
-
-currentResourcePile.extend(shuffle())
-currentResourcePile.extend(shuffle())
-currentResourcePile.extend(shuffle())
-
+currentResourcePile = resourcePile.copy()
+random.shuffle(currentResourcePile)
+random.shuffle(currentResourcePile)
 
 currentActionPile = actionCardPile.copy()
 random.shuffle(currentActionPile)
-random.shuffle(currentActionPile)   
+random.shuffle(currentActionPile)
 discardedActionPile = []
 discardedActionPile.append(currentActionPile.pop())     # Adding 1st card to the discard pile
 
@@ -86,3 +77,5 @@ serviceCards = ["Research", "Marketing", "Design", "Technology"]
 
 # MVP Cards (r,m,d,t)
 MVPCards=[[3,2,3,2],[3,2,2,3],[2,3,3,2],[2,3,2,3],[3,2,3,2],[3,2,2,3],[2,3,3,2],[2,3,2,3]]
+
+
