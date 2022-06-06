@@ -65,9 +65,6 @@ class player():
     # function to draw n Resource Cards
     def drawResource(self, n, currentResourcePile):
         for i in range(n):
-            if len(resourcePile) == 0:
-                print("Resources are depleted, there will be no more resources distributed")
-                return 0
             resource = currentResourcePile.pop()
             if resource < 10:
                 self.time += resource
