@@ -1,6 +1,13 @@
-from dis import dis
-from statistics import median
 import random
+def intinput():                     # Function to get integer input
+    while 1:
+        try:
+            userChoice = int(input("Please choose an option:    "))
+            break
+        except ValueError:
+            print("Enter a valid choice")
+            continue
+    return userChoice
 
 
 def getChoice():        # function to get users choice of action on their turn
@@ -8,13 +15,14 @@ def getChoice():        # function to get users choice of action on their turn
     print("2. Buy Actionable Cards")
     print("3. View Resources in Hand")
     print("4. View Entire Hand")
-    print("5. More Options")
+    print("5. Chance Cards")
     print("9. End Turn\n")
     print("************************")
-    userChoice = int(input())
+    
+    userChoice = intinput()
 
     if userChoice == 1 or userChoice == 2 or userChoice == 3 or userChoice == 9 or userChoice == 4 or userChoice == 5:
-        return userChoice
+        return userChoice       
     else:
         print("Please enter a valid choice")
         getChoice()
@@ -104,26 +112,40 @@ def skillCards(player):       # Function for user to trigger Skill Cards
     player.printMoney()
     print("\n")
 
+
     # asking user which skill if any they want to upgrade
     print("************************")
     print("The Cost of Buying next level skill is:")
-    print("1. Research (lvl {}): {}".format(research + 1, generalCost[research]))
-    print("2. Marketing (lvl {}): {}".format(marketing + 1, generalCost[marketing]))
-    print("3. Design (lvl {}): {}".format(design + 1, specialCost[design]))
-    print("4. Technology (lvl {}): {}".format(technology + 1, specialCost[technology]))
+    if research == 4:
+        print("Research is maxed at lvl 4")
+    else:
+        print("1. Research (lvl {}): {}".format(research + 1, generalCost[research]))
+    if marketing == 4:
+        print("Marketing is maxed at lvl 4")
+    else:
+        print("2. Marketing (lvl {}): {}".format(marketing + 1, generalCost[marketing]))
+    if design == 4:
+        print("Design is maxed at lvl 4")
+    else:
+        print("3. Design (lvl {}): {}".format(design + 1, specialCost[design]))
+    if technology == 4:
+        print("Marketing is maxed at lvl 4")
+    else:
+        print("4. Technology (lvl {}): {}".format(technology + 1, specialCost[technology]))
     print("************************")
+
     print("\n5. View Skill Benefits")
     print("6. Back to Turn Menu")
     boughtSkill = int(input()) - 1  
 
 
-    if boughtSkill== 0:
+    if boughtSkill== 0 and research !=4:
         confirmPurchase(0, research)
-    elif boughtSkill== 1:
+    elif boughtSkill== 1 and marketing !=4:
         confirmPurchase(1, marketing)
-    elif boughtSkill== 2:
+    elif boughtSkill== 2 and design !=4:
         confirmPurchase(2, design)
-    elif boughtSkill== 3:
+    elif boughtSkill== 3 and technology !=4:
         confirmPurchase(3, technology)
     elif boughtSkill== 4:
         print("\nDiscount (in hrs) based on skill level is:   ")
@@ -145,11 +167,11 @@ def actionCards(player,currentActionPile,discardedActionPile,drawnCounter):
         if startingLetter=='R':
             modifiedCost=currentTopActionCard[1] - player.skillReduction[0]
         elif startingLetter=='M':
-            modifiedCost=currentTopActionCard[1] - player.skillReduction[0]
+            modifiedCost=currentTopActionCard[1] - player.skillReduction[1]
         elif startingLetter=='D':
-            modifiedCost=currentTopActionCard[1] - player.skillReduction[0]
+            modifiedCost=currentTopActionCard[1] - player.skillReduction[2]
         elif startingLetter=='T':
-            modifiedCost=currentTopActionCard[1] - player.skillReduction[0]
+            modifiedCost=currentTopActionCard[1] - player.skillReduction[3]
 
         
         return modifiedCost
@@ -214,13 +236,13 @@ def actionCards(player,currentActionPile,discardedActionPile,drawnCounter):
     userRun=1
     
     while userRun==1:
-        # if len(currentActionPile)==0:  this code is for reshufffling when current actionpile is over
-        #     print("The action card pile is over and is being reshuffled")
-        #     copyDiscardedActionPile=discardedActionPile.copy()
-        #     currentActionPile=copyDiscardedActionPile[:-1]
-        #     discardedActionPile=[discardedActionPile.pop()]
-        #     random.shuffle(currentActionPile)
-        #     random.shuffle(currentActionPile)
+        if len(currentActionPile)==0:  #this code is for reshufffling when current actionpile is over
+            print("The action card pile is over and is being reshuffled")
+            copyDiscardedActionPile=discardedActionPile.copy()
+            currentActionPile=copyDiscardedActionPile[:-1]
+            discardedActionPile=[discardedActionPile.pop()]
+            random.shuffle(currentActionPile)
+            random.shuffle(currentActionPile)
         print("****************************************************************")
         print("You have drawn {} cards in this chance".format(drawnCounter))
         if len(discardedActionPile)==0 :
@@ -265,3 +287,37 @@ def checkWin(player):          # Function to check if the player has met the obj
         return True
     else:
         return False
+
+def chanceCard(player, chanceCards, keys):
+    def buyChanceCards(player, chanceCards, keys):
+        if len(keys) !=0 :
+            if player.money >= 2000:
+                print("Are you sure you want to buy a chance card for $2000")
+                print("1. YES       2. NO")
+                confirmation = intinput()
+                if confirmation == 1:
+                    key = keys.pop()
+                    player.chanceKeys.append(key)
+                    print(chanceCards[key])
+                else:
+                    chanceCards(player, chanceCards, keys)
+            else:
+                print("insufficient funds")
+                return
+        else:
+            print("The chance card pile is exhausted")
+    
+    def viewChanceCards(player):
+        print("Your chance cards are:")
+        player.printChance()
+
+    print("1. Buy a chance Card")
+    print("2. View / Play your chance cards")
+    print("3. Go Back\n")
+
+    userChoice = intinput()
+
+    if userChoice == 1:
+        buyChanceCards(player, chanceCards, keys)
+    if userChoice == 2:
+        viewChanceCards(player)

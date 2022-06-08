@@ -53,9 +53,16 @@ designActionCards.extend(repeat(("Design", specializedHourCost[2]), specializedC
 actionCardPile = researchActionCards + marketingActionCards + technologyActionCards + designActionCards
 
 # create a random Resources pile and Actionable Cards pile
-currentResourcePile = resourcePile.copy()
-random.shuffle(currentResourcePile)
-random.shuffle(currentResourcePile)
+def addResources(resourcePile):
+    resources = resourcePile.copy()
+    random.shuffle(resources)
+    random.shuffle(resources)
+    return resources
+
+currentResourcePile = []
+currentResourcePile.extend(addResources(resourcePile))
+currentResourcePile.extend(addResources(resourcePile))
+currentResourcePile.extend(addResources(resourcePile))
 
 currentActionPile = actionCardPile.copy()
 random.shuffle(currentActionPile)
@@ -77,5 +84,40 @@ serviceCards = ["Research", "Marketing", "Design", "Technology"]
 
 # MVP Cards (r,m,d,t)
 MVPCards=[[3,2,3,2],[3,2,2,3],[2,3,3,2],[2,3,2,3],[3,2,3,2],[3,2,2,3],[2,3,3,2],[2,3,2,3]]
+
+
+# Chance Cards
+
+neutral = "Better luck next time"
+chanceCards= {
+1: neutral,
+2: neutral,
+3: neutral,
+4: neutral,
+5: neutral,
+6: neutral,
+7: neutral,
+8: neutral,
+9: "Exchange your personality card with someone",
+10: "Exchange your personality card with someone",
+11: "The entrepreneur choose another entrepreneur to loose half their resource cards randomly",
+12: "The entreprenur can choose any one player and one resource and everytime that entrepreneur spends that resource, the entrepreneur who has played this card will get it for the next 2 rounds",
+13: "The entreprenur can choose any one player and one resource and everytime that entrepreneur spends that resource, the entrepreneur who has played this card will get it for the next 2 rounds",
+14: "The entreprenur can choose 2 different entrepreneurs to receive no resources for one round.",
+15: "The entrepreneur can change any one functional requirement of an MVP card of any entrepreneur including themselves by 1 point.",
+16: "The entrepreneur can change any one functional requirement of an MVP card of any entrepreneur including herself by 1 point.",
+17: "The entreperneur gets a free service card at random",
+18: "The entrepreneur can steal any skill card (Level 4 not allowed) from another entrepreneur.",
+19: "The entrepreneur can steal any skill card (Level 4 not allowed) from another entrepreneur.",
+20: "Just say NO",
+21: "Just say NO",
+22: "Just say NO",
+23: "An entrepreneur can discard any one actionable card of any other entrepreneur",
+24: "An entrepreneur can discard any one actionable card of any other entrepreneur"}
+
+chanceCardKeys = list(chanceCards.keys())
+random.shuffle(chanceCardKeys)
+random.shuffle(chanceCardKeys)
+
 
 
