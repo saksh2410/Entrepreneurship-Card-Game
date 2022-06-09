@@ -14,6 +14,7 @@ class player():
         self.serviceCards = serviceCards
         self.resourceCardsNumber = 0
         self.skillReduction = [0,0,0,0]     # variable holding the discount value of each action due to player skill
+        self.chanceKeys = []
         # Initial Creation of a player
         print("Creating player {}: {}".format(self.playerNumber, name))
         print("\n********************************")
@@ -47,13 +48,19 @@ class player():
     
     def printSkillReduction(self):
         print("Your current discount on skills (R,M,D,T) is:    {}".format(self.skillReduction))
+
+    def printChance(self):
+        print("Your current chance cards are:")
+        for i in range(len(self.chanceKeys)):
+            print(chanceCards[self.chanceKeys[i]])
     
     # to print every card player owns
     def printHold(self):
-        print("Total number of Resource Cards: {}".format(self.resourceCardsNumber))
-        print("Money: {}    Time: {}".format(self.money, self.time))
-        print("Skill Level (R,M,D,T):   {}".format(self.skillLevel))
-        print("Actionable Cards (R,M,D,T):  {}".format(self.actionCards))
+        self.printResourceCardsNumber()
+        self.printResources()
+        self.printActionCards()
+        self.printSkillLevel()
+        self.printChance()
 
     # function to show your MVP
     def printMVP(self):
@@ -126,6 +133,8 @@ saksham= player(2, playerName[1], [3,2,3,2], "Design")
 print("\n\n")
 yajur= player(3, playerName[2], [2,3,3,2], "Marketing")
 print("\n\n")
+
+# parth.drawResource(100,currentResourcePile)
 
 
 playerList= [parth, saksham, yajur]
