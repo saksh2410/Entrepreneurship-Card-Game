@@ -22,7 +22,7 @@ class player():
         print("********************************\n")
         # Drawing 4 initial resources as the starting hand
         print("Drawing initial resources")    
-        self.drawResource(4, currentResourcePile)
+        self.drawResource(13, currentResourcePile)
 
 
     # Functions to print player info
@@ -76,6 +76,15 @@ class player():
         print("\n")
         self.printResourceCardsNumber()
         self.printResources()
+    #functions to add/subtract money or time
+    def addMoney(self,moneyToBeAdded):
+        self.money+=moneyToBeAdded
+    def subtractMoney(self,moneyToBeSubtracted):
+        self.money-=moneyToBeSubtracted
+    def addTime(self,timeToBeAdded):
+        self.time+=timeToBeAdded
+    def subtractTime(self,timeToBeSubtracted):
+        self.time-=timeToBeSubtracted
 
 def getServicecards(serviceCards):
     NumberOfplayers=input("Number of players: ")
@@ -120,11 +129,11 @@ playerName= ["Parth", "Saksham", "Yajur"]
 
 # HARDCODING PLAYERS WITH CERTAIN MVPS AND SERVICE CARDS FOR PLAYTESTING
 print("\n\n")
-parth= player(1, playerName[0], [2,3,2,3], "Research")
+parth= player(1, playerName[0], [2,3,2,3], ["Research"])
 print("\n\n")
-saksham= player(2, playerName[1], [3,2,3,2], "Design")
+saksham= player(2, playerName[1], [3,2,3,2], ["Design","Technology"])
 print("\n\n")
-yajur= player(3, playerName[2], [2,3,3,2], "Marketing")
+yajur= player(3, playerName[2], [2,3,3,2], ["Marketing","Technology"])
 print("\n\n")
 
 

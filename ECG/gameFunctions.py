@@ -145,11 +145,11 @@ def actionCards(player,currentActionPile,discardedActionPile,drawnCounter):
         if startingLetter=='R':
             modifiedCost=currentTopActionCard[1] - player.skillReduction[0]
         elif startingLetter=='M':
-            modifiedCost=currentTopActionCard[1] - player.skillReduction[0]
+            modifiedCost=currentTopActionCard[1] - player.skillReduction[1]
         elif startingLetter=='D':
-            modifiedCost=currentTopActionCard[1] - player.skillReduction[0]
+            modifiedCost=currentTopActionCard[1] - player.skillReduction[2]
         elif startingLetter=='T':
-            modifiedCost=currentTopActionCard[1] - player.skillReduction[0]
+            modifiedCost=currentTopActionCard[1] - player.skillReduction[3]
 
         
         return modifiedCost

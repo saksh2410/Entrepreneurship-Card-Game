@@ -11,6 +11,7 @@ while win == 0:
     drawnCounter = 0
     while endTurn == 0:
         
+        playerList= [parth, saksham, yajur]
         currentPlayer = playerList[playerTracker]       # Get current player's object from play list
         print("It's {}'s turn:".format(currentPlayer.name))
         print("**************************************")
